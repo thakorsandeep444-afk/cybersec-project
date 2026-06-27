@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSec Command Center</title>
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #58a6ff;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            border-bottom: 2px solid #238636;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        h1 { color: #2ea043; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .card h2 { color: #f85149; margin-top: 0; }
+        .status-good { color: #2ea043; font-weight: bold; }
+        .status-alert { color: #f85149; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🛡️ CyberSec Project Hub</h1>
+        <p>System Status: <span class="status-good">SECURE</span> | Terminal active...</p>
+    </header>
+
+    <div class="grid">
+        <div class="card">
+            <h2>Vulnerability Scanner</h2>
+            <p>Automated network probing tool to detect open ports and outdated service versions.</p>
+            <p>Status: <span class="status-good">Idle</span></p>
+        </div>
+        <div class="card">
+            <h2>Threat Intel Feed</h2>
+            <p>Real-time tracking of emerging CVEs and global ransomware campaigns.</p>
+            <p>Active Alerts: <span class="status-alert">3 Critical</span></p>
+        </div>
+        <div class="card">
+            <h2>Penetration Testing Reports</h2>
+            <p>Archived documentation and remediation strategies for audited network infrastructures.</p>
+        </div>
+    </div>
+
+</body>
+</html>
