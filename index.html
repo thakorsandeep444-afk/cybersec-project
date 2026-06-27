@@ -3,61 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberSec Command Center</title>
+    <title>Aegis Sec Ops | Dashboard</title>
     <style>
+        :root {
+            --bg-main: #0a0e17;
+            --bg-card: #121824;
+            --accent-green: #00ff66;
+            --accent-blue: #00d2ff;
+            --accent-red: #ff3b30;
+            --text-muted: #8b9bb4;
+            --border: #1e293b;
+        }
+
         body {
-            background-color: #0d1117;
-            color: #58a6ff;
-            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--bg-main);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 20px;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
         }
+
+        /* Sidebar navigation layout */
+        aside {
+            width: 260px;
+            background: #070a10;
+            border-right: 1px solid var(--border);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--accent-blue);
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .nav-links li {
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+        }
+
+        .nav-links li.active, .nav-links li:hover {
+            background: var(--bg-card);
+            color: var(--accent-green);
+            border-left: 3px solid var(--accent-green);
+        }
+
+        /* Main window container */
+        main {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
         header {
-            border-bottom: 2px solid #238636;
-            padding-bottom: 10px;
-            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
         }
-        h1 { color: #2ea043; }
-        .grid {
+
+        h1 { margin: 0; font-size: 28px; }
+
+        .badge {
+            background: rgba(0, 255, 102, 0.1);
+            color: var(--accent-green);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            border: 1px solid var(--accent-green);
+        }
+
+        /* Stats grid top row */
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 20px;
+            margin-bottom: 32px;
         }
-        .card {
-            background: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 6px;
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
             padding: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            border-radius: 12px;
         }
-        .card h2 { color: #f85149; margin-top: 0; }
-        .status-good { color: #2ea043; font-weight: bold; }
-        .status-alert { color: #f85149; font-weight: bold; }
+
+        .stat-card p { margin: 0; color: var(--text-muted); font-size: 14px; }
+        .stat-card h3 { margin: 8px 0 0 0; font-size: 24px; color: var(--accent-blue); }
+
+        /* Tools grid layout */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 24px;
+        }
+
+        .tool-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+
+        .tool-card h2 { margin-top: 0; font-size: 20px; display: flex; align-items: center; gap: 10px; }
+
+        input, button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg-main);
+            color: white;
+            box-sizing: border-box;
+            font-size: 15px;
+        }
+
+        button {
+            background: var(--accent-blue);
+            color: var(--bg-main);
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: opacity 0.2s;
+        }
+
+        button:hover { opacity: 0.9; }
+
+        .terminal-box {
+            background: #05070f;
+            border: 1px solid #1e293b;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 14px;
+            border-radius: 8px;
+            margin-top: 16px;
+            min-height: 80px;
+            max-height: 150px;
+            overflow-y: auto;
+            color: #ccc;
+            font-size: 13px;
+            line-height: 1.5;
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>🛡️ CyberSec Project Hub</h1>
-        <p>System Status: <span class="status-good">SECURE</span> | Terminal active...</p>
-    </header>
+    <!-- Sidebar layout selection options -->
+    <aside>
+        <div class="logo">🛡️ AEGIS.OS</div>
+        <ul class="nav-links">
+            <li class="active">Command Center</li>
+            <li>Vulnerability Scan</li>
+            <li>Incident Logs</li>
+            <li>Settings</li>
+        </ul>
+    </aside>
 
-    <div class="grid">
-        <div class="card">
-            <h2>Vulnerability Scanner</h2>
-            <p>Automated network probing tool to detect open ports and outdated service versions.</p>
-            <p>Status: <span class="status-good">Idle</span></p>
-        </div>
-        <div class="card">
-            <h2>Threat Intel Feed</h2>
-            <p>Real-time tracking of emerging CVEs and global ransomware campaigns.</p>
-            <p>Active Alerts: <span class="status-alert">3 Critical</span></p>
-        </div>
-        <div class="card">
-            <h2>Penetration Testing Reports</h2>
-            <p>Archived documentation and remediation strategies for audited network infrastructures.</p>
-        </div>
-    </div>
+    <!-- Main Workspace -->
+    <main>
+        <header>
+            <div>
+                <h1>SecOps Operational Dashboard</h1>
+                <p style="color: var(--text-muted); margin: 4px 0 0 0;">Real-time perimeter monitoring node</p>
+            </div>
+            <div class="badge">● Network Status: Protected</div>
+        </header>
 
+        <!-- Dynamic Stat Tracker Row -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <p>Packets Inspected</p>
+                <h3>1,249,831</h3>
+            </div>
+            <div class="stat-card">
+                <p>Threats Blocked</p>
+                <h3 style="color: var(--accent-red)">412</h3>
+            </div>
+            <div class="stat-card">
+                <p>System Integrity</p>
+                <h3 style="color: var(--accent-green)">99.98%</h3>
+            </div>
+        </div>
+
+        <!-- Interactive Cybersecurity Tools Sections -->
+        <div class="tools-grid">
+            
+            <!-- Tool 1: Password Strength Tester Analyzer -->
+            <div class="tool-card">
+                <h2>🔑 Local Password Strength Evaluator</h2>
+                <p style="color: var(--text-muted); font-size: 14px;">Analyze entropy strength values on client side instantly.</p>
+                <input type="password" id="passInput" placeholder="Type a password to analyze..." oninput="checkPassword()">
+                <div class="terminal-box" id="passFeedback">Result: Waiting for security input...</div>
+            </div>
+
+            <!-- Tool 2: Virtual Sandbox Port Scanner Simulator -->
+            <div class="tool-card">
+                <h2>🌐 Target Port Enumeration Simulator</h2>
+                <p style="color: var(--text-muted); font-size: 14px;">Simulate a network map sweep sequence against an address target node.</p>
+                <input type="text" id="ipInput" value="192.168.1.45" placeholder="Target IP...">
+                <button onclick="runSimulatedScan()">Initialize Port Sweep Sequence</button>
+                <div class="terminal-box" id="scannerTerminal">> Console standing by...</div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Simple JavaScript mechanics to handle the logic engine -->
+    <script>
+        function checkPassword() {
+            const pass = document.getElementById('passInput').value;
+            const feedback = document.getElementById('passFeedback');
+            if(!pass) {
+                feedback.innerHTML = "Result: Waiting for security input...";
+                feedback.style.color = "#ccc";
+                return;
+            }
+            
+            let score = 0;
+            if (pass.length >= 8) score++;
+            if (/[A-Z]/.test(pass)) score++;
+            if (/[0-9]/.test(pass)) score++;
+            if (/[^A-Za-z0-9]/.test(pass)) score++;
+
+            if(score <= 1) {
+                feedback.innerHTML = `<span style="color: #ff3b30">[CRITICAL VULNERABILITY]</span> Weak. Easy target for automated dictionary brute-force algorithms.`;
+            } else if (score <= 3) {
+                feedback.innerHTML = `<span style="color: #00d2ff">[WARNING]</span> Moderate. Increase length and add dynamic symbol structures.`;
+            } else {
+                feedback.innerHTML = `<span style="color: #00ff66">[OPTIMAL]</span> High Entropy Complex Structure. Highly resistant to cryptanalysis frameworks.`;
+            }
+        }
+
+        function runSimulatedScan() {
+            const term = document.getElementById('scannerTerminal');
+            const targetIp = document.getElementById('ipInput').value || 'Target Node';
+            term.innerHTML = `> Launching network sweep mapping protocol against target structural interface: ${targetIp}...<br>`;
+            
+            setTimeout(() => { term.innerHTML += `> Synchronizing handshake sockets...<br>`; }, 400);
+            setTimeout(() => { term.innerHTML += `> <span style="color: #00ff66">[OPEN]</span> Connection established on Port 22 (SSH v2 Framework identified)<br>`; }, 900);
+            setTimeout(() => { term.innerHTML += `> <span style="color: #00ff66">[OPEN]</span> Connection established on Port 80 (Nginx HTTP Node server response)<br>`; }, 1400);
+            setTimeout(() => { term.innerHTML += `> <span style="color: #ff3b30">[CLOSED]</span> Port 443 closed secure.<br>`; }, 1800);
+            setTimeout(() => { term.innerHTML += `> Task executed successfully. Sweep pipeline finished.`; }, 2200);
+        }
+    </script>
 </body>
 </html>
