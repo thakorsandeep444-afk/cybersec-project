@@ -6,22 +6,61 @@
     <title>Nexus Cyber Defense | AI Awareness</title>
     <style>
         :root {
-            --bg-color: #0b0c10;
-            --surface-color: #1f2833;
-            --primary-neon: #66fcf1;
-            --secondary-neon: #45a29e;
+            --bg-base: #030508;
+            --primary-neon: #00f3ff;
+            --secondary-neon: #bc13fe;
+            --glass-bg: rgba(15, 20, 30, 0.4);
+            --glass-border: rgba(0, 243, 255, 0.2);
             --text-light: #c5c6c7;
             --text-white: #ffffff;
-            --danger: #ff4655;
+            --danger: #ff0055;
             --success: #00ff66;
         }
 
         body {
             margin: 0;
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-base);
             color: var(--text-light);
             overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Ambient Background Glowing Orbs */
+        .ambient-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            animation: floatOrb 10s infinite alternate ease-in-out;
+        }
+        .orb-1 {
+            width: 400px; height: 400px;
+            background: rgba(0, 243, 255, 0.15);
+            top: -100px; left: -100px;
+        }
+        .orb-2 {
+            width: 500px; height: 500px;
+            background: rgba(188, 19, 254, 0.1);
+            bottom: -150px; right: -100px;
+            animation-delay: -5s;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.1); }
+        }
+
+        /* Glassmorphism Global Class */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
         }
 
         /* Navigation Bar */
@@ -30,23 +69,21 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 50px;
-            background: rgba(11, 12, 16, 0.9);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(102, 252, 241, 0.2);
+            background: rgba(3, 5, 8, 0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
             position: sticky;
             top: 0;
             z-index: 100;
+            box-shadow: 0 4px 30px rgba(0, 243, 255, 0.1);
         }
 
         .logo {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 900;
             color: var(--text-white);
-            text-transform: uppercase;
             letter-spacing: 2px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
         }
 
         .logo span { color: var(--primary-neon); }
@@ -60,233 +97,312 @@
 
         .nav-links li {
             cursor: pointer;
-            font-weight: 600;
+            font-weight: bold;
             color: var(--text-light);
-            transition: color 0.3s;
+            transition: all 0.3s;
+            padding: 5px 10px;
         }
 
         .nav-links li:hover, .nav-links li.active {
             color: var(--primary-neon);
-            text-shadow: 0 0 8px var(--primary-neon);
+            text-shadow: 0 0 12px var(--primary-neon);
         }
 
-        .btn-register {
+        /* Neon Buttons */
+        .btn-neon {
             background: transparent;
             color: var(--primary-neon);
             border: 2px solid var(--primary-neon);
-            padding: 10px 24px;
-            border-radius: 4px;
+            padding: 12px 28px;
+            border-radius: 8px;
             font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             cursor: pointer;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2), inset 0 0 10px rgba(0, 243, 255, 0.1);
         }
 
-        .btn-register:hover {
+        .btn-neon:hover {
             background: var(--primary-neon);
-            color: var(--bg-color);
-            box-shadow: 0 0 15px var(--primary-neon);
+            color: #000;
+            box-shadow: 0 0 20px var(--primary-neon), inset 0 0 20px rgba(255,255,255,0.5);
+            transform: scale(1.05);
         }
 
-        /* Views (Tabs) */
+        /* Views */
         .view-section {
             display: none;
-            animation: fadeIn 0.5s ease-in-out;
-            min-height: 80vh;
-            padding: 50px;
-            max-width: 1200px;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 60px 20px;
+            max-width: 1100px;
             margin: 0 auto;
+            flex: 1;
         }
 
         .view-section.active { display: block; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         /* Hero Section */
-        .hero {
-            text-align: center;
-            padding: 80px 0;
-        }
-
+        .hero { text-align: center; padding: 40px 0 60px 0; }
         .hero h1 {
-            font-size: 56px;
+            font-size: 64px;
             color: var(--text-white);
             margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255,255,255,0.2);
         }
+        .hero p { font-size: 20px; max-width: 650px; margin: 0 auto 40px auto; line-height: 1.6; }
 
-        .hero p {
-            font-size: 20px;
-            max-width: 600px;
-            margin: 0 auto 40px auto;
-            line-height: 1.6;
-        }
-
-        /* Features Grid */
+        /* Grids & Cards */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
+            gap: 35px;
         }
 
         .card {
-            background: var(--surface-color);
-            padding: 30px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: transform 0.3s, box-shadow 0.3s;
+            padding: 35px 25px;
+            text-align: center;
+            transition: all 0.4s ease;
+            animation: floatCard 6s infinite alternate ease-in-out;
+        }
+
+        .card:nth-child(2) { animation-delay: -2s; }
+        .card:nth-child(3) { animation-delay: -4s; }
+
+        @keyframes floatCard {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-10px); }
         }
 
         .card:hover {
-            transform: translateY(-10px);
             border-color: var(--primary-neon);
-            box-shadow: 0 10px 30px rgba(102, 252, 241, 0.15);
+            box-shadow: 0 15px 35px rgba(0, 243, 255, 0.2);
+            transform: translateY(-15px) scale(1.02);
+            animation-play-state: paused;
         }
 
-        .card h2 { color: var(--text-white); margin-top: 0; }
-        .card-icon { font-size: 40px; margin-bottom: 15px; }
+        .card h2 { color: var(--primary-neon); margin-top: 0; }
+        .card-icon { font-size: 50px; margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); }
 
-        /* Tools UI */
-        .tool-container {
-            background: var(--surface-color);
-            padding: 40px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.05);
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
+        /* Tool Inputs */
         textarea, input {
             width: 100%;
-            padding: 15px;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.1);
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             color: white;
-            border-radius: 6px;
+            border-radius: 8px;
             margin: 20px 0;
             font-size: 16px;
+            font-family: inherit;
             box-sizing: border-box;
             outline: none;
+            transition: all 0.3s;
         }
 
-        textarea:focus, input:focus { border-color: var(--primary-neon); }
+        textarea:focus, input:focus {
+            border-color: var(--primary-neon);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+            background: rgba(0, 0, 0, 0.6);
+        }
         
         .result-box {
             padding: 20px;
-            border-radius: 6px;
-            background: rgba(0,0,0,0.5);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.6);
             margin-top: 20px;
             font-weight: bold;
-            display: none; /* Hidden until action */
+            font-size: 16px;
+            transition: all 0.3s;
         }
+
+        /* Dynamic Pop-up Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s forwards;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .modal-content {
+            width: 90%;
+            max-width: 500px;
+            padding: 40px;
+            position: relative;
+            text-align: center;
+            transform: scale(0.8);
+            animation: popUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes popUp { to { transform: scale(1); } }
+
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            color: var(--text-light);
+            font-size: 28px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover { color: var(--danger); text-shadow: 0 0 10px var(--danger); }
 
         /* Footer */
         footer {
             text-align: center;
-            padding: 30px;
-            background: var(--surface-color);
-            border-top: 1px solid rgba(255,255,255,0.05);
+            padding: 25px;
+            background: rgba(3, 5, 8, 0.8);
+            border-top: 1px solid var(--glass-border);
             margin-top: auto;
+            backdrop-filter: blur(10px);
+        }
+
+        .sandeep-sig {
+            color: var(--secondary-neon);
+            font-weight: 900;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px var(--secondary-neon);
+            animation: pulseText 2s infinite alternate;
+        }
+
+        @keyframes pulseText {
+            0% { text-shadow: 0 0 10px var(--secondary-neon); }
+            100% { text-shadow: 0 0 25px var(--secondary-neon), 0 0 40px var(--secondary-neon); }
         }
 
     </style>
 </head>
 <body>
 
+    <!-- Ambient Glowing Background -->
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+
+    <!-- Navigation -->
     <nav>
-        <div class="logo">Nexus<span>AI</span></div>
+        <div class="logo">NEXUS<span>AI</span></div>
         <ul class="nav-links">
-            <li class="active" onclick="switchView('home', this)">Home</li>
-            <li onclick="switchView('password-tool', this)">Password AI</li>
-            <li onclick="switchView('scam-tool', this)">Scam Detector</li>
-            <li onclick="switchView('learning', this)">Learning Hub</li>
+            <li class="active" onclick="switchView('home', this)">Home Center</li>
+            <li onclick="switchView('password-tool', this)">Password Engine</li>
+            <li onclick="switchView('scam-tool', this)">Threat Scanner</li>
+            <li onclick="switchView('learning', this)">Training Hub</li>
         </ul>
-        <button class="btn-register" onclick="alert('Demo: Registration Portal opening...')">Register Free</button>
+        <button class="btn-neon" onclick="openModal('register')">Register Node</button>
     </nav>
 
+    <!-- HOME VIEW -->
     <div id="home" class="view-section active">
         <div class="hero">
-            <h1>Fortify Your Digital Life</h1>
+            <h1>Defend the Digital Grid</h1>
             <p>An intelligent, AI-driven cybersecurity awareness platform built to educate, test, and protect against modern social engineering and digital threats.</p>
-            <button class="btn-register" style="padding: 15px 30px; font-size: 18px;" onclick="switchView('password-tool', document.querySelectorAll('.nav-links li')[1])">Launch Defense Tools</button>
+            <button class="btn-neon" style="padding: 16px 36px; font-size: 18px;" onclick="switchView('password-tool', document.querySelectorAll('.nav-links li')[1])">Initialize Defense Tools</button>
         </div>
 
         <div class="grid">
-            <div class="card">
+            <div class="card glass-panel">
                 <div class="card-icon">🧠</div>
                 <h2>85% Human Error</h2>
-                <p>The vast majority of breaches involve a human element. Our tools train you to spot the red flags before it's too late.</p>
+                <p style="color: var(--text-muted);">The vast majority of breaches involve a human element. Our tools train you to spot the red flags before it's too late.</p>
             </div>
-            <div class="card">
+            <div class="card glass-panel">
                 <div class="card-icon">🛡️</div>
                 <h2>Local Processing</h2>
-                <p>Your privacy matters. Our Password and Scam detection heuristics run completely in your browser. No data leaves your machine.</p>
+                <p style="color: var(--text-muted);">Your privacy matters. Our security heuristics run completely in your browser. No data leaves your machine.</p>
             </div>
-            <div class="card">
+            <div class="card glass-panel">
                 <div class="card-icon">📈</div>
-                <h2>Adaptive Quizzes</h2>
-                <p>Test your knowledge with our dynamic cyber survival assessment and receive a customized risk report.</p>
+                <h2>Adaptive Training</h2>
+                <p style="color: var(--text-muted);">Test your knowledge with our dynamic cyber survival assessment and receive a customized risk report.</p>
             </div>
         </div>
     </div>
 
+    <!-- PASSWORD AI VIEW -->
     <div id="password-tool" class="view-section">
-        <div class="tool-container">
-            <h1 style="color: var(--text-white); margin-top: 0;">Password Integrity AI</h1>
-            <p>Analyze your password strength against common dictionary attacks and brute-force algorithms. <em>(Processed locally)</em></p>
+        <div class="glass-panel" style="max-width: 700px; margin: 0 auto; padding: 40px;">
+            <h1 style="color: var(--primary-neon); margin-top: 0; text-shadow: 0 0 10px rgba(0,243,255,0.3);">Password Integrity Matrix</h1>
+            <p>Analyze your password entropy against common dictionary attacks and brute-force algorithms.</p>
             
-            <input type="password" id="pwdInput" placeholder="Enter a password to analyze..." onkeyup="analyzePassword()">
+            <input type="password" id="pwdInput" placeholder="Enter security key to analyze..." onkeyup="analyzePassword()">
             
-            <div id="pwdResult" class="result-box" style="display: block;">
-                Waiting for input...
+            <div id="pwdResult" class="result-box" style="border-left: 5px solid gray;">
+                Awaiting input stream...
             </div>
         </div>
     </div>
 
+    <!-- SCAM DETECTOR VIEW -->
     <div id="scam-tool" class="view-section">
-        <div class="tool-container">
-            <h1 style="color: var(--text-white); margin-top: 0;">Phishing & Scam Detector</h1>
+        <div class="glass-panel" style="max-width: 700px; margin: 0 auto; padding: 40px;">
+            <h1 style="color: var(--primary-neon); margin-top: 0; text-shadow: 0 0 10px rgba(0,243,255,0.3);">Phishing & Scam Detector</h1>
             <p>Paste suspicious emails, text messages, or DMs below. Our heuristic engine will flag urgency tactics and fraud attempts.</p>
             
-            <textarea id="scamInput" rows="6" placeholder="Paste the suspicious message here... (e.g. 'URGENT: Your account has been locked. Click here to verify.')"></textarea>
+            <textarea id="scamInput" rows="6" placeholder="Paste the suspicious payload here... (e.g. 'URGENT: Account locked. Click here.')"></textarea>
             
-            <button class="btn-register" style="width: 100%; margin-top: 10px;" onclick="analyzeScam()">Analyze Message</button>
+            <button class="btn-neon" style="width: 100%; margin-top: 10px;" onclick="analyzeScam()">Scan Payload</button>
             
-            <div id="scamResult" class="result-box"></div>
+            <div id="scamResult" class="result-box" style="display: none;"></div>
         </div>
     </div>
 
+    <!-- LEARNING HUB VIEW -->
     <div id="learning" class="view-section">
-        <h1 style="text-align: center; color: white;">Interactive Learning Hub</h1>
-        <p style="text-align: center; margin-bottom: 40px;">Select a module to upgrade your cybersecurity knowledge.</p>
+        <h1 style="text-align: center; color: var(--text-white); font-size: 40px; margin-bottom: 10px;">Tactical Training Hub</h1>
+        <p style="text-align: center; margin-bottom: 50px;">Select a module to upgrade your cybersecurity knowledge.</p>
         
         <div class="grid">
-            <div class="card">
+            <div class="card glass-panel">
                 <h2>Module 1: Social Engineering</h2>
                 <p>Learn how attackers manipulate human psychology to steal credentials.</p>
-                <button class="btn-register" style="margin-top: 20px;">Start Module</button>
+                <button class="btn-neon" style="margin-top: 25px;" onclick="openModal('mod1')">Access Module</button>
             </div>
-            <div class="card">
-                <h2>Module 2: 2FA & Auth</h2>
+            <div class="card glass-panel">
+                <h2>Module 2: 2FA Architecture</h2>
                 <p>Understand the difference between SMS, Authenticator apps, and hardware keys.</p>
-                <button class="btn-register" style="margin-top: 20px;">Start Module</button>
+                <button class="btn-neon" style="margin-top: 25px;" onclick="openModal('mod2')">Access Module</button>
             </div>
-            <div class="card">
-                <h2>Module 3: Malware Defenses</h2>
-                <p>How to identify ransomware, spyware, and trojans before execution.</p>
-                <button class="btn-register" style="margin-top: 20px;">Start Module</button>
+            <div class="card glass-panel">
+                <h2>Module 3: Malware Defense</h2>
+                <p>How to identify ransomware, spyware, and trojans before payload execution.</p>
+                <button class="btn-neon" style="margin-top: 25px;" onclick="openModal('mod3')">Access Module</button>
             </div>
         </div>
     </div>
 
+    <!-- Dynamic Modal System -->
+    <div id="cyberModal" class="modal-overlay">
+        <div class="modal-content glass-panel">
+            <span class="close-btn" onclick="closeModal()">×</span>
+            <h2 id="modalTitle" style="color: var(--primary-neon); font-size: 28px;">Loading...</h2>
+            <p id="modalBody" style="line-height: 1.6; margin-top: 20px; font-size: 16px;">Establishing secure connection...</p>
+            <button class="btn-neon" style="margin-top: 30px;" onclick="closeModal()">Acknowledge</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
     <footer>
-        <p>© 2026 Nexus AI Cybersecurity. Built for educational deployment.</p>
+        <p style="margin: 0; font-size: 16px;">
+            Designed & Engineered by <span class="sandeep-sig">SANDEEP</span>
+        </p>
     </footer>
 
+    <!-- JavaScript Engine -->
     <script>
-        // Tab Navigation
+        // Tab Navigation Logic
         function switchView(viewId, element) {
             document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
             document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
@@ -295,35 +411,67 @@
             element.classList.add('active');
         }
 
+        // Modal Logic (Popups for working buttons)
+        function openModal(type) {
+            const modal = document.getElementById('cyberModal');
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+
+            if(type === 'register') {
+                title.innerText = "Node Registration Open";
+                body.innerHTML = "Welcome Operative.<br><br>Enter your secure credentials below to join the Nexus AI network.<br><br><input type='text' placeholder='Desired Username' style='padding: 10px; margin-top:10px;'><input type='password' placeholder='Secure Password' style='padding: 10px;'>";
+            } else if (type === 'mod1') {
+                title.innerText = "Module 1: Social Engineering";
+                body.innerHTML = "<strong>Objective:</strong> Identify manipulation.<br><br>Attackers rarely hack systems directly anymore; they hack <em>people</em>. Phishing, pretexting, and baiting rely on urgency and fear. Always verify the source independently.";
+            } else if (type === 'mod2') {
+                title.innerText = "Module 2: 2FA Architecture";
+                body.innerHTML = "<strong>Objective:</strong> Secure Authentication.<br><br>SMS-based 2FA is vulnerable to SIM-swapping. Transition to Time-based One-Time Passwords (TOTP) via Authenticator apps, or physical hardware security keys like YubiKey.";
+            } else if (type === 'mod3') {
+                title.innerText = "Module 3: Malware Defense";
+                body.innerHTML = "<strong>Objective:</strong> Payload identification.<br><br>Never enable macros on unexpected Office documents. Keep endpoint detection systems active, and ensure offline, air-gapped backups exist for critical data to survive Ransomware.";
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('cyberModal').style.display = 'none';
+        }
+
         // Password AI Logic
         function analyzePassword() {
             const pwd = document.getElementById('pwdInput').value;
             const res = document.getElementById('pwdResult');
             
             if (!pwd) {
-                res.innerHTML = "Waiting for input...";
-                res.style.borderLeft = "none";
+                res.innerHTML = "Awaiting input stream...";
+                res.style.borderLeft = "5px solid gray";
+                res.style.color = "white";
                 return;
             }
 
             let score = 0;
-            if (pwd.length > 10) score++;
+            if (pwd.length >= 12) score += 2;
+            else if (pwd.length >= 8) score += 1;
             if (/[A-Z]/.test(pwd)) score++;
             if (/[0-9]/.test(pwd)) score++;
             if (/[^A-Za-z0-9]/.test(pwd)) score++;
 
-            if (score <= 1) {
-                res.innerHTML = "⚠️ CRITICAL: Weak password. Can be cracked instantly.";
+            if (score <= 2) {
+                res.innerHTML = "⚠️ CRITICAL VULNERABILITY: Hash can be cracked instantly by modern GPUs. Do not use.";
                 res.style.borderLeft = "5px solid var(--danger)";
                 res.style.color = "var(--danger)";
-            } else if (score <= 3) {
-                res.innerHTML = "⚡ MODERATE: Add symbols and length to improve security.";
+                res.style.textShadow = "0 0 10px rgba(255,0,85,0.4)";
+            } else if (score <= 4) {
+                res.innerHTML = "⚡ MODERATE INTEGRITY: Acceptable, but vulnerable to targeted dictionary attacks. Add length.";
                 res.style.borderLeft = "5px solid #ffcc00";
                 res.style.color = "#ffcc00";
+                res.style.textShadow = "none";
             } else {
-                res.innerHTML = "🛡️ SECURE: Strong complexity. Excellent resistance to brute-force.";
+                res.innerHTML = "🛡️ OPTIMAL SECURITY: High entropy detected. Highly resistant to cryptographic brute-forcing.";
                 res.style.borderLeft = "5px solid var(--success)";
                 res.style.color = "var(--success)";
+                res.style.textShadow = "0 0 10px rgba(0,255,102,0.4)";
             }
         }
 
@@ -334,14 +482,13 @@
             res.style.display = "block";
 
             if (!text) {
-                res.innerHTML = "Please paste a message to analyze.";
+                res.innerHTML = "System Error: No payload provided for analysis.";
                 res.style.borderLeft = "5px solid gray";
                 res.style.color = "white";
                 return;
             }
 
-            // Flag keywords commonly used in phishing/scams
-            const redFlags = ['urgent', 'verify', 'account suspended', 'click here', 'password reset', 'bank', 'winner', 'gift card', 'wallet'];
+            const redFlags = ['urgent', 'verify', 'account suspended', 'click here', 'password reset', 'bank', 'winner', 'gift card', 'wallet', 'locked', 'unauthorized login', 'claim'];
             let flagCount = 0;
 
             redFlags.forEach(flag => {
@@ -349,15 +496,15 @@
             });
 
             if (flagCount === 0) {
-                res.innerHTML = "✅ LOW RISK: No immediate phishing keywords detected. Still, always verify the sender's email address.";
+                res.innerHTML = "✅ STATUS NORMAL: No heuristic phishing keywords detected. Continue to exercise standard caution.";
                 res.style.borderLeft = "5px solid var(--success)";
                 res.style.color = "var(--success)";
             } else if (flagCount <= 2) {
-                res.innerHTML = `⚠️ WARNING: Detected ${flagCount} suspicious keyword(s). Proceed with caution. Do not click unknown links.`;
+                res.innerHTML = `⚠️ WARNING: Threat engines detected ${flagCount} suspicious keyword(s). Proceed with caution. Verify sender domain.`;
                 res.style.borderLeft = "5px solid #ffcc00";
                 res.style.color = "#ffcc00";
             } else {
-                res.innerHTML = `🚨 HIGH ALERT: Detected ${flagCount} phishing triggers! This message uses high-pressure social engineering tactics. DO NOT interact!`;
+                res.innerHTML = `🚨 SEVERE ALERT: Detected ${flagCount} phishing triggers! Payload utilizes high-pressure social engineering tactics. DO NOT CLICK LINKS.`;
                 res.style.borderLeft = "5px solid var(--danger)";
                 res.style.color = "var(--danger)";
             }
