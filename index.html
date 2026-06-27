@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus Cyber Defense | AI Awareness</title>
+    <title>Nexus Cyber Defense | Secure Terminal</title>
     <style>
         :root {
             --bg-base: #030508;
             --primary-neon: #00f3ff;
             --secondary-neon: #bc13fe;
-            --glass-bg: rgba(15, 20, 30, 0.4);
+            --glass-bg: rgba(15, 20, 30, 0.45);
             --glass-border: rgba(0, 243, 255, 0.2);
             --text-light: #c5c6c7;
             --text-white: #ffffff;
@@ -26,6 +26,11 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            /* Classy cyber-grid background */
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
         }
 
         /* Ambient Background Glowing Orbs */
@@ -63,6 +68,89 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
         }
 
+        /* --- AUTHENTICATION PORTAL (LOGIN/REGISTER) --- */
+        #auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            position: fixed;
+            top: 0; left: 0;
+            z-index: 999;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .auth-box {
+            width: 100%;
+            max-width: 420px;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-logo {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--text-white);
+            letter-spacing: 3px;
+            margin-bottom: 5px;
+            text-shadow: 0 0 15px rgba(0, 243, 255, 0.6);
+        }
+        .auth-logo span { color: var(--primary-neon); }
+
+        .auth-toggle {
+            display: flex;
+            background: rgba(0,0,0,0.4);
+            border-radius: 8px;
+            margin: 30px 0;
+            padding: 5px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .auth-toggle button {
+            flex: 1;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .auth-toggle button.active {
+            background: rgba(0, 243, 255, 0.1);
+            color: var(--primary-neon);
+            box-shadow: inset 0 0 10px rgba(0, 243, 255, 0.2);
+        }
+
+        .auth-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .auth-status {
+            margin-top: 15px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            color: var(--primary-neon);
+            height: 20px;
+        }
+
+        /* --- MAIN APPLICATION (Hidden by default) --- */
+        #app-container {
+            display: none;
+            flex-direction: column;
+            min-height: 100vh;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
         /* Navigation Bar */
         nav {
             display: flex;
@@ -78,50 +166,26 @@
             box-shadow: 0 4px 30px rgba(0, 243, 255, 0.1);
         }
 
-        .logo {
-            font-size: 26px;
-            font-weight: 900;
-            color: var(--text-white);
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
-        }
+        .logo { font-size: 24px; font-weight: 900; color: var(--text-white); letter-spacing: 2px; }
+        .logo span { color: var(--primary-neon); text-shadow: 0 0 10px var(--primary-neon); }
 
-        .logo span { color: var(--primary-neon); }
-
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 30px;
-            margin: 0;
-        }
-
-        .nav-links li {
-            cursor: pointer;
-            font-weight: bold;
-            color: var(--text-light);
-            transition: all 0.3s;
-            padding: 5px 10px;
-        }
-
-        .nav-links li:hover, .nav-links li.active {
-            color: var(--primary-neon);
-            text-shadow: 0 0 12px var(--primary-neon);
-        }
+        .nav-links { list-style: none; display: flex; gap: 30px; margin: 0; }
+        .nav-links li { cursor: pointer; font-weight: bold; color: var(--text-light); transition: all 0.3s; }
+        .nav-links li:hover, .nav-links li.active { color: var(--primary-neon); text-shadow: 0 0 12px var(--primary-neon); }
 
         /* Neon Buttons */
         .btn-neon {
+            width: 100%;
             background: transparent;
             color: var(--primary-neon);
             border: 2px solid var(--primary-neon);
-            padding: 12px 28px;
+            padding: 14px 28px;
             border-radius: 8px;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 1px;
             cursor: pointer;
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
             box-shadow: 0 0 10px rgba(0, 243, 255, 0.2), inset 0 0 10px rgba(0, 243, 255, 0.1);
         }
 
@@ -129,7 +193,6 @@
             background: var(--primary-neon);
             color: #000;
             box-shadow: 0 0 20px var(--primary-neon), inset 0 0 20px rgba(255,255,255,0.5);
-            transform: scale(1.05);
         }
 
         /* Views */
@@ -144,54 +207,22 @@
 
         .view-section.active { display: block; }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         /* Hero Section */
         .hero { text-align: center; padding: 40px 0 60px 0; }
-        .hero h1 {
-            font-size: 64px;
-            color: var(--text-white);
-            margin-bottom: 20px;
-            text-shadow: 0 0 20px rgba(255,255,255,0.2);
-        }
+        .hero h1 { font-size: 56px; color: var(--text-white); margin-bottom: 20px; text-shadow: 0 0 20px rgba(255,255,255,0.2); }
         .hero p { font-size: 20px; max-width: 650px; margin: 0 auto 40px auto; line-height: 1.6; }
 
         /* Grids & Cards */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 35px;
-        }
-
-        .card {
-            padding: 35px 25px;
-            text-align: center;
-            transition: all 0.4s ease;
-            animation: floatCard 6s infinite alternate ease-in-out;
-        }
-
-        .card:nth-child(2) { animation-delay: -2s; }
-        .card:nth-child(3) { animation-delay: -4s; }
-
-        @keyframes floatCard {
-            0% { transform: translateY(0px); }
-            100% { transform: translateY(-10px); }
-        }
-
-        .card:hover {
-            border-color: var(--primary-neon);
-            box-shadow: 0 15px 35px rgba(0, 243, 255, 0.2);
-            transform: translateY(-15px) scale(1.02);
-            animation-play-state: paused;
-        }
-
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 35px; }
+        .card { padding: 35px 25px; text-align: center; transition: all 0.4s ease; }
+        .card:hover { border-color: var(--primary-neon); box-shadow: 0 15px 35px rgba(0, 243, 255, 0.2); transform: translateY(-10px); }
         .card h2 { color: var(--primary-neon); margin-top: 0; }
         .card-icon { font-size: 50px; margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); }
 
-        /* Tool Inputs */
+        /* Inputs */
         textarea, input {
             width: 100%;
             padding: 16px;
@@ -199,7 +230,6 @@
             border: 1px solid rgba(255, 255, 255, 0.15);
             color: white;
             border-radius: 8px;
-            margin: 20px 0;
             font-size: 16px;
             font-family: inherit;
             box-sizing: border-box;
@@ -207,59 +237,9 @@
             transition: all 0.3s;
         }
 
-        textarea:focus, input:focus {
-            border-color: var(--primary-neon);
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
-            background: rgba(0, 0, 0, 0.6);
-        }
+        textarea:focus, input:focus { border-color: var(--primary-neon); box-shadow: 0 0 15px rgba(0, 243, 255, 0.3); background: rgba(0, 0, 0, 0.6); }
         
-        .result-box {
-            padding: 20px;
-            border-radius: 8px;
-            background: rgba(0, 0, 0, 0.6);
-            margin-top: 20px;
-            font-weight: bold;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-
-        /* Dynamic Pop-up Modal */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.3s forwards;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .modal-content {
-            width: 90%;
-            max-width: 500px;
-            padding: 40px;
-            position: relative;
-            text-align: center;
-            transform: scale(0.8);
-            animation: popUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes popUp { to { transform: scale(1); } }
-
-        .close-btn {
-            position: absolute;
-            top: 15px; right: 20px;
-            color: var(--text-light);
-            font-size: 28px;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .close-btn:hover { color: var(--danger); text-shadow: 0 0 10px var(--danger); }
+        .result-box { padding: 20px; border-radius: 8px; background: rgba(0, 0, 0, 0.6); margin-top: 20px; font-weight: bold; font-size: 16px; }
 
         /* Footer */
         footer {
@@ -272,17 +252,12 @@
         }
 
         .sandeep-sig {
-            color: var(--secondary-neon);
-            font-weight: 900;
-            letter-spacing: 3px;
+            color: var(--secondary-neon); font-weight: 900; letter-spacing: 3px;
             text-shadow: 0 0 15px var(--secondary-neon);
             animation: pulseText 2s infinite alternate;
         }
 
-        @keyframes pulseText {
-            0% { text-shadow: 0 0 10px var(--secondary-neon); }
-            100% { text-shadow: 0 0 25px var(--secondary-neon), 0 0 40px var(--secondary-neon); }
-        }
+        @keyframes pulseText { 0% { text-shadow: 0 0 10px var(--secondary-neon); } 100% { text-shadow: 0 0 25px var(--secondary-neon), 0 0 40px var(--secondary-neon); } }
 
     </style>
 </head>
@@ -292,153 +267,199 @@
     <div class="ambient-orb orb-1"></div>
     <div class="ambient-orb orb-2"></div>
 
-    <!-- Navigation -->
-    <nav>
-        <div class="logo">NEXUS<span>AI</span></div>
-        <ul class="nav-links">
-            <li class="active" onclick="switchView('home', this)">Home Center</li>
-            <li onclick="switchView('password-tool', this)">Password Engine</li>
-            <li onclick="switchView('scam-tool', this)">Threat Scanner</li>
-            <li onclick="switchView('learning', this)">Training Hub</li>
-        </ul>
-        <button class="btn-neon" onclick="openModal('register')">Register Node</button>
-    </nav>
+    <!-- ==============================================
+         AUTHENTICATION PORTAL (LOGIN / REGISTER)
+         ============================================== -->
+    <div id="auth-container">
+        <div class="glass-panel auth-box">
+            <div class="auth-logo">NEXUS<span>AI</span></div>
+            <p style="color: var(--text-muted); margin: 0; font-size: 14px;">Secure Gateway Terminal</p>
 
-    <!-- HOME VIEW -->
-    <div id="home" class="view-section active">
-        <div class="hero">
-            <h1>Defend the Digital Grid</h1>
-            <p>An intelligent, AI-driven cybersecurity awareness platform built to educate, test, and protect against modern social engineering and digital threats.</p>
-            <button class="btn-neon" style="padding: 16px 36px; font-size: 18px;" onclick="switchView('password-tool', document.querySelectorAll('.nav-links li')[1])">Initialize Defense Tools</button>
-        </div>
+            <div class="auth-toggle">
+                <button id="tab-login" class="active" onclick="switchAuthMode('login')">Agent Login</button>
+                <button id="tab-register" onclick="switchAuthMode('register')">New Registration</button>
+            </div>
 
-        <div class="grid">
-            <div class="card glass-panel">
-                <div class="card-icon">🧠</div>
-                <h2>85% Human Error</h2>
-                <p style="color: var(--text-muted);">The vast majority of breaches involve a human element. Our tools train you to spot the red flags before it's too late.</p>
+            <div class="auth-input-group">
+                <input type="text" id="auth-user" placeholder="Username or Agent ID">
+                <input type="email" id="auth-email" placeholder="Encrypted Email Address" style="display: none;">
+                <input type="password" id="auth-pass" placeholder="Access Password">
             </div>
-            <div class="card glass-panel">
-                <div class="card-icon">🛡️</div>
-                <h2>Local Processing</h2>
-                <p style="color: var(--text-muted);">Your privacy matters. Our security heuristics run completely in your browser. No data leaves your machine.</p>
-            </div>
-            <div class="card glass-panel">
-                <div class="card-icon">📈</div>
-                <h2>Adaptive Training</h2>
-                <p style="color: var(--text-muted);">Test your knowledge with our dynamic cyber survival assessment and receive a customized risk report.</p>
-            </div>
+
+            <button class="btn-neon" id="auth-btn" onclick="processAuth()">Initiate Handshake</button>
+            <div id="auth-status" class="auth-status"></div>
         </div>
     </div>
 
-    <!-- PASSWORD AI VIEW -->
-    <div id="password-tool" class="view-section">
-        <div class="glass-panel" style="max-width: 700px; margin: 0 auto; padding: 40px;">
-            <h1 style="color: var(--primary-neon); margin-top: 0; text-shadow: 0 0 10px rgba(0,243,255,0.3);">Password Integrity Matrix</h1>
-            <p>Analyze your password entropy against common dictionary attacks and brute-force algorithms.</p>
-            
-            <input type="password" id="pwdInput" placeholder="Enter security key to analyze..." onkeyup="analyzePassword()">
-            
-            <div id="pwdResult" class="result-box" style="border-left: 5px solid gray;">
-                Awaiting input stream...
+
+    <!-- ==============================================
+         MAIN APPLICATION DASHBOARD (Hidden on load)
+         ============================================== -->
+    <div id="app-container">
+        <nav>
+            <div class="logo">NEXUS<span>AI</span></div>
+            <ul class="nav-links">
+                <li class="active" onclick="switchView('home', this)">Command Center</li>
+                <li onclick="switchView('password-tool', this)">Password Engine</li>
+                <li onclick="switchView('scam-tool', this)">Threat Scanner</li>
+                <li onclick="switchView('learning', this)">Training Hub</li>
+            </ul>
+            <!-- Replaced Register button with a Logout button -->
+            <button class="btn-neon" style="width: auto; padding: 10px 20px; border-color: var(--danger); color: var(--danger);" onclick="logout()">Disconnect</button>
+        </nav>
+
+        <!-- HOME VIEW -->
+        <div id="home" class="view-section active">
+            <div class="hero">
+                <h1 id="welcome-text">Defend the Digital Grid</h1>
+                <p>An intelligent, AI-driven cybersecurity awareness platform built to educate, test, and protect against modern social engineering and digital threats.</p>
+            </div>
+
+            <div class="grid">
+                <div class="card glass-panel">
+                    <div class="card-icon">🧠</div>
+                    <h2>85% Human Error</h2>
+                    <p style="color: var(--text-light);">The vast majority of breaches involve a human element. Our tools train you to spot the red flags before it's too late.</p>
+                </div>
+                <div class="card glass-panel">
+                    <div class="card-icon">🛡️</div>
+                    <h2>Local Processing</h2>
+                    <p style="color: var(--text-light);">Your privacy matters. Our security heuristics run completely in your browser. No data leaves your machine.</p>
+                </div>
+                <div class="card glass-panel">
+                    <div class="card-icon">📈</div>
+                    <h2>Adaptive Training</h2>
+                    <p style="color: var(--text-light);">Test your knowledge with our dynamic cyber survival assessment and receive a customized risk report.</p>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- SCAM DETECTOR VIEW -->
-    <div id="scam-tool" class="view-section">
-        <div class="glass-panel" style="max-width: 700px; margin: 0 auto; padding: 40px;">
-            <h1 style="color: var(--primary-neon); margin-top: 0; text-shadow: 0 0 10px rgba(0,243,255,0.3);">Phishing & Scam Detector</h1>
-            <p>Paste suspicious emails, text messages, or DMs below. Our heuristic engine will flag urgency tactics and fraud attempts.</p>
-            
-            <textarea id="scamInput" rows="6" placeholder="Paste the suspicious payload here... (e.g. 'URGENT: Account locked. Click here.')"></textarea>
-            
-            <button class="btn-neon" style="width: 100%; margin-top: 10px;" onclick="analyzeScam()">Scan Payload</button>
-            
-            <div id="scamResult" class="result-box" style="display: none;"></div>
-        </div>
-    </div>
-
-    <!-- LEARNING HUB VIEW -->
-    <div id="learning" class="view-section">
-        <h1 style="text-align: center; color: var(--text-white); font-size: 40px; margin-bottom: 10px;">Tactical Training Hub</h1>
-        <p style="text-align: center; margin-bottom: 50px;">Select a module to upgrade your cybersecurity knowledge.</p>
-        
-        <div class="grid">
-            <div class="card glass-panel">
-                <h2>Module 1: Social Engineering</h2>
-                <p>Learn how attackers manipulate human psychology to steal credentials.</p>
-                <button class="btn-neon" style="margin-top: 25px;" onclick="openModal('mod1')">Access Module</button>
-            </div>
-            <div class="card glass-panel">
-                <h2>Module 2: 2FA Architecture</h2>
-                <p>Understand the difference between SMS, Authenticator apps, and hardware keys.</p>
-                <button class="btn-neon" style="margin-top: 25px;" onclick="openModal('mod2')">Access Module</button>
-            </div>
-            <div class="card glass-panel">
-                <h2>Module 3: Malware Defense</h2>
-                <p>How to identify ransomware, spyware, and trojans before payload execution.</p>
-                <button class="btn-neon" style="margin-top: 25px;" onclick="openModal('mod3')">Access Module</button>
+        <!-- PASSWORD AI VIEW -->
+        <div id="password-tool" class="view-section">
+            <div class="glass-panel" style="max-width: 700px; margin: 0 auto; padding: 40px;">
+                <h1 style="color: var(--primary-neon); margin-top: 0;">Password Integrity Matrix</h1>
+                <p>Analyze your password entropy against common dictionary attacks and brute-force algorithms.</p>
+                <input type="password" id="pwdInput" placeholder="Enter security key to analyze..." onkeyup="analyzePassword()">
+                <div id="pwdResult" class="result-box" style="border-left: 5px solid gray;">Awaiting input stream...</div>
             </div>
         </div>
-    </div>
 
-    <!-- Dynamic Modal System -->
-    <div id="cyberModal" class="modal-overlay">
-        <div class="modal-content glass-panel">
-            <span class="close-btn" onclick="closeModal()">×</span>
-            <h2 id="modalTitle" style="color: var(--primary-neon); font-size: 28px;">Loading...</h2>
-            <p id="modalBody" style="line-height: 1.6; margin-top: 20px; font-size: 16px;">Establishing secure connection...</p>
-            <button class="btn-neon" style="margin-top: 30px;" onclick="closeModal()">Acknowledge</button>
+        <!-- SCAM DETECTOR VIEW -->
+        <div id="scam-tool" class="view-section">
+            <div class="glass-panel" style="max-width: 700px; margin: 0 auto; padding: 40px;">
+                <h1 style="color: var(--primary-neon); margin-top: 0;">Phishing & Scam Detector</h1>
+                <p>Paste suspicious emails, text messages, or DMs below. Our heuristic engine will flag urgency tactics and fraud attempts.</p>
+                <textarea id="scamInput" rows="6" placeholder="Paste the suspicious payload here..."></textarea>
+                <button class="btn-neon" style="margin-top: 10px;" onclick="analyzeScam()">Scan Payload</button>
+                <div id="scamResult" class="result-box" style="display: none;"></div>
+            </div>
         </div>
-    </div>
 
-    <!-- Footer -->
-    <footer>
-        <p style="margin: 0; font-size: 16px;">
-            Designed & Engineered by <span class="sandeep-sig">SANDEEP</span>
-        </p>
-    </footer>
+        <!-- LEARNING HUB VIEW -->
+        <div id="learning" class="view-section">
+            <h1 style="text-align: center; color: var(--text-white); font-size: 40px; margin-bottom: 50px;">Tactical Training Hub</h1>
+            <div class="grid">
+                <div class="card glass-panel">
+                    <h2>Module 1: Social Engineering</h2>
+                    <p>Learn how attackers manipulate human psychology to steal credentials.</p>
+                    <button class="btn-neon" style="margin-top: 25px;" onclick="alert('Accessing Module 1 Secure Data...')">Access Module</button>
+                </div>
+                <div class="card glass-panel">
+                    <h2>Module 2: 2FA Architecture</h2>
+                    <p>Understand the difference between SMS, Authenticator apps, and hardware keys.</p>
+                    <button class="btn-neon" style="margin-top: 25px;" onclick="alert('Accessing Module 2 Secure Data...')">Access Module</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p style="margin: 0; font-size: 16px;">Designed & Engineered by <span class="sandeep-sig">SANDEEP</span></p>
+        </footer>
+    </div>
 
     <!-- JavaScript Engine -->
     <script>
-        // Tab Navigation Logic
+        // --- AUTHENTICATION LOGIC ---
+        let currentAuthMode = 'login';
+
+        function switchAuthMode(mode) {
+            currentAuthMode = mode;
+            document.getElementById('tab-login').classList.remove('active');
+            document.getElementById('tab-register').classList.remove('active');
+            
+            if(mode === 'login') {
+                document.getElementById('tab-login').classList.add('active');
+                document.getElementById('auth-email').style.display = 'none';
+                document.getElementById('auth-btn').innerText = 'Initiate Handshake';
+            } else {
+                document.getElementById('tab-register').classList.add('active');
+                document.getElementById('auth-email').style.display = 'block';
+                document.getElementById('auth-btn').innerText = 'Register Node';
+            }
+        }
+
+        function processAuth() {
+            const user = document.getElementById('auth-user').value || 'Operative';
+            const status = document.getElementById('auth-status');
+            const btn = document.getElementById('auth-btn');
+
+            if(document.getElementById('auth-user').value === "" || document.getElementById('auth-pass').value === "") {
+                status.style.color = "var(--danger)";
+                status.innerText = "Error: Credentials cannot be empty.";
+                return;
+            }
+
+            status.style.color = "var(--primary-neon)";
+            btn.disabled = true;
+            btn.style.opacity = "0.5";
+
+            // Simulated hacking/loading sequence
+            status.innerText = "> Decrypting credentials...";
+            setTimeout(() => { status.innerText = "> Verifying database hash..."; }, 800);
+            setTimeout(() => { status.innerText = "> Bypassing firewall protocols..."; }, 1600);
+            setTimeout(() => { 
+                status.style.color = "var(--success)";
+                status.innerText = "> ACCESS GRANTED."; 
+            }, 2400);
+
+            // Transition to main dashboard
+            setTimeout(() => {
+                document.getElementById('auth-container').style.display = 'none';
+                document.getElementById('app-container').style.display = 'flex';
+                // Trigger fade in
+                setTimeout(() => {
+                    document.getElementById('app-container').style.opacity = '1';
+                }, 50);
+                
+                // Personalize the dashboard
+                document.getElementById('welcome-text').innerText = `Welcome to the Grid, ${user}`;
+            }, 3000);
+        }
+
+        function logout() {
+            // Reset and show login screen
+            document.getElementById('app-container').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('app-container').style.display = 'none';
+                document.getElementById('auth-container').style.display = 'flex';
+                document.getElementById('auth-status').innerText = "";
+                document.getElementById('auth-user').value = "";
+                document.getElementById('auth-pass').value = "";
+                document.getElementById('auth-btn').disabled = false;
+                document.getElementById('auth-btn').style.opacity = "1";
+            }, 500);
+        }
+
+        // --- DASHBOARD NAVIGATION LOGIC ---
         function switchView(viewId, element) {
             document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
             document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
-            
             document.getElementById(viewId).classList.add('active');
             element.classList.add('active');
         }
 
-        // Modal Logic (Popups for working buttons)
-        function openModal(type) {
-            const modal = document.getElementById('cyberModal');
-            const title = document.getElementById('modalTitle');
-            const body = document.getElementById('modalBody');
-
-            if(type === 'register') {
-                title.innerText = "Node Registration Open";
-                body.innerHTML = "Welcome Operative.<br><br>Enter your secure credentials below to join the Nexus AI network.<br><br><input type='text' placeholder='Desired Username' style='padding: 10px; margin-top:10px;'><input type='password' placeholder='Secure Password' style='padding: 10px;'>";
-            } else if (type === 'mod1') {
-                title.innerText = "Module 1: Social Engineering";
-                body.innerHTML = "<strong>Objective:</strong> Identify manipulation.<br><br>Attackers rarely hack systems directly anymore; they hack <em>people</em>. Phishing, pretexting, and baiting rely on urgency and fear. Always verify the source independently.";
-            } else if (type === 'mod2') {
-                title.innerText = "Module 2: 2FA Architecture";
-                body.innerHTML = "<strong>Objective:</strong> Secure Authentication.<br><br>SMS-based 2FA is vulnerable to SIM-swapping. Transition to Time-based One-Time Passwords (TOTP) via Authenticator apps, or physical hardware security keys like YubiKey.";
-            } else if (type === 'mod3') {
-                title.innerText = "Module 3: Malware Defense";
-                body.innerHTML = "<strong>Objective:</strong> Payload identification.<br><br>Never enable macros on unexpected Office documents. Keep endpoint detection systems active, and ensure offline, air-gapped backups exist for critical data to survive Ransomware.";
-            }
-
-            modal.style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('cyberModal').style.display = 'none';
-        }
-
-        // Password AI Logic
+        // --- PASSWORD AI LOGIC ---
         function analyzePassword() {
             const pwd = document.getElementById('pwdInput').value;
             const res = document.getElementById('pwdResult');
@@ -451,62 +472,48 @@
             }
 
             let score = 0;
-            if (pwd.length >= 12) score += 2;
-            else if (pwd.length >= 8) score += 1;
+            if (pwd.length >= 12) score += 2; else if (pwd.length >= 8) score += 1;
             if (/[A-Z]/.test(pwd)) score++;
             if (/[0-9]/.test(pwd)) score++;
             if (/[^A-Za-z0-9]/.test(pwd)) score++;
 
             if (score <= 2) {
-                res.innerHTML = "⚠️ CRITICAL VULNERABILITY: Hash can be cracked instantly by modern GPUs. Do not use.";
-                res.style.borderLeft = "5px solid var(--danger)";
-                res.style.color = "var(--danger)";
-                res.style.textShadow = "0 0 10px rgba(255,0,85,0.4)";
+                res.innerHTML = "⚠️ CRITICAL VULNERABILITY: Hash can be cracked instantly.";
+                res.style.borderLeft = "5px solid var(--danger)"; res.style.color = "var(--danger)";
             } else if (score <= 4) {
-                res.innerHTML = "⚡ MODERATE INTEGRITY: Acceptable, but vulnerable to targeted dictionary attacks. Add length.";
-                res.style.borderLeft = "5px solid #ffcc00";
-                res.style.color = "#ffcc00";
-                res.style.textShadow = "none";
+                res.innerHTML = "⚡ MODERATE INTEGRITY: Vulnerable to targeted dictionary attacks.";
+                res.style.borderLeft = "5px solid #ffcc00"; res.style.color = "#ffcc00";
             } else {
-                res.innerHTML = "🛡️ OPTIMAL SECURITY: High entropy detected. Highly resistant to cryptographic brute-forcing.";
-                res.style.borderLeft = "5px solid var(--success)";
-                res.style.color = "var(--success)";
-                res.style.textShadow = "0 0 10px rgba(0,255,102,0.4)";
+                res.innerHTML = "🛡️ OPTIMAL SECURITY: High entropy detected.";
+                res.style.borderLeft = "5px solid var(--success)"; res.style.color = "var(--success)";
             }
         }
 
-        // Scam Detector Logic
+        // --- SCAM DETECTOR LOGIC ---
         function analyzeScam() {
             const text = document.getElementById('scamInput').value.toLowerCase();
             const res = document.getElementById('scamResult');
             res.style.display = "block";
 
             if (!text) {
-                res.innerHTML = "System Error: No payload provided for analysis.";
-                res.style.borderLeft = "5px solid gray";
-                res.style.color = "white";
+                res.innerHTML = "System Error: No payload provided.";
+                res.style.borderLeft = "5px solid gray"; res.style.color = "white";
                 return;
             }
 
             const redFlags = ['urgent', 'verify', 'account suspended', 'click here', 'password reset', 'bank', 'winner', 'gift card', 'wallet', 'locked', 'unauthorized login', 'claim'];
             let flagCount = 0;
-
-            redFlags.forEach(flag => {
-                if (text.includes(flag)) flagCount++;
-            });
+            redFlags.forEach(flag => { if (text.includes(flag)) flagCount++; });
 
             if (flagCount === 0) {
-                res.innerHTML = "✅ STATUS NORMAL: No heuristic phishing keywords detected. Continue to exercise standard caution.";
-                res.style.borderLeft = "5px solid var(--success)";
-                res.style.color = "var(--success)";
+                res.innerHTML = "✅ STATUS NORMAL: No heuristic phishing keywords detected.";
+                res.style.borderLeft = "5px solid var(--success)"; res.style.color = "var(--success)";
             } else if (flagCount <= 2) {
-                res.innerHTML = `⚠️ WARNING: Threat engines detected ${flagCount} suspicious keyword(s). Proceed with caution. Verify sender domain.`;
-                res.style.borderLeft = "5px solid #ffcc00";
-                res.style.color = "#ffcc00";
+                res.innerHTML = `⚠️ WARNING: Detected ${flagCount} suspicious keyword(s). Proceed with caution.`;
+                res.style.borderLeft = "5px solid #ffcc00"; res.style.color = "#ffcc00";
             } else {
-                res.innerHTML = `🚨 SEVERE ALERT: Detected ${flagCount} phishing triggers! Payload utilizes high-pressure social engineering tactics. DO NOT CLICK LINKS.`;
-                res.style.borderLeft = "5px solid var(--danger)";
-                res.style.color = "var(--danger)";
+                res.innerHTML = `🚨 SEVERE ALERT: Detected ${flagCount} phishing triggers! DO NOT CLICK LINKS.`;
+                res.style.borderLeft = "5px solid var(--danger)"; res.style.color = "var(--danger)";
             }
         }
     </script>
