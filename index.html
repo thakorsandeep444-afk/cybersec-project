@@ -3,18 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus Cyber Defense | Secure Terminal</title>
+    <title>CyberGuard AI | Secure Your Digital Life</title>
     <style>
         :root {
-            --bg-base: #030508;
-            --primary-neon: #00f3ff;
-            --secondary-neon: #bc13fe;
-            --glass-bg: rgba(15, 20, 30, 0.45);
-            --glass-border: rgba(0, 243, 255, 0.2);
-            --text-light: #c5c6c7;
+            --bg-base: #0b1119;
+            --bg-card: #131a26;
+            --primary-cyan: #00f3ff;
+            --primary-red: #ff4757;
+            --text-light: #a0aec0;
             --text-white: #ffffff;
-            --danger: #ff0055;
-            --success: #00ff66;
+            --border-color: rgba(255, 255, 255, 0.1);
         }
 
         body {
@@ -23,497 +21,412 @@
             background-color: var(--bg-base);
             color: var(--text-light);
             overflow-x: hidden;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            /* Classy cyber-grid background */
-            background-image: 
-                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
-            background-size: 30px 30px;
+            line-height: 1.6;
         }
 
-        /* Ambient Background Glowing Orbs */
-        .ambient-orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(120px);
-            z-index: -1;
-            animation: floatOrb 10s infinite alternate ease-in-out;
-        }
-        .orb-1 {
-            width: 400px; height: 400px;
-            background: rgba(0, 243, 255, 0.15);
-            top: -100px; left: -100px;
-        }
-        .orb-2 {
-            width: 500px; height: 500px;
-            background: rgba(188, 19, 254, 0.1);
-            bottom: -150px; right: -100px;
-            animation-delay: -5s;
-        }
-
-        @keyframes floatOrb {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(50px, 50px) scale(1.1); }
-        }
-
-        /* Glassmorphism Global Class */
-        .glass-panel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-        }
-
-        /* --- AUTHENTICATION PORTAL (LOGIN/REGISTER) --- */
-        #auth-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            width: 100vw;
-            position: fixed;
-            top: 0; left: 0;
-            z-index: 999;
-            animation: fadeIn 1s ease-out;
-        }
-
-        .auth-box {
-            width: 100%;
-            max-width: 420px;
-            padding: 40px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .auth-logo {
-            font-size: 32px;
-            font-weight: 900;
-            color: var(--text-white);
-            letter-spacing: 3px;
-            margin-bottom: 5px;
-            text-shadow: 0 0 15px rgba(0, 243, 255, 0.6);
-        }
-        .auth-logo span { color: var(--primary-neon); }
-
-        .auth-toggle {
-            display: flex;
-            background: rgba(0,0,0,0.4);
-            border-radius: 8px;
-            margin: 30px 0;
-            padding: 5px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .auth-toggle button {
-            flex: 1;
-            padding: 10px;
-            background: transparent;
-            border: none;
-            color: var(--text-light);
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 6px;
-            transition: all 0.3s;
-        }
-
-        .auth-toggle button.active {
-            background: rgba(0, 243, 255, 0.1);
-            color: var(--primary-neon);
-            box-shadow: inset 0 0 10px rgba(0, 243, 255, 0.2);
-        }
-
-        .auth-input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .auth-status {
-            margin-top: 15px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
-            color: var(--primary-neon);
-            height: 20px;
-        }
-
-        /* --- MAIN APPLICATION (Hidden by default) --- */
-        #app-container {
-            display: none;
-            flex-direction: column;
-            min-height: 100vh;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-        }
-
-        /* Navigation Bar */
+        /* Navigation */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 50px;
-            background: rgba(3, 5, 8, 0.7);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--glass-border);
-            position: sticky;
+            background: rgba(11, 17, 25, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            width: 100%;
             top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 30px rgba(0, 243, 255, 0.1);
-        }
-
-        .logo { font-size: 24px; font-weight: 900; color: var(--text-white); letter-spacing: 2px; }
-        .logo span { color: var(--primary-neon); text-shadow: 0 0 10px var(--primary-neon); }
-
-        .nav-links { list-style: none; display: flex; gap: 30px; margin: 0; }
-        .nav-links li { cursor: pointer; font-weight: bold; color: var(--text-light); transition: all 0.3s; }
-        .nav-links li:hover, .nav-links li.active { color: var(--primary-neon); text-shadow: 0 0 12px var(--primary-neon); }
-
-        /* Neon Buttons */
-        .btn-neon {
-            width: 100%;
-            background: transparent;
-            color: var(--primary-neon);
-            border: 2px solid var(--primary-neon);
-            padding: 14px 28px;
-            border-radius: 8px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2), inset 0 0 10px rgba(0, 243, 255, 0.1);
-        }
-
-        .btn-neon:hover {
-            background: var(--primary-neon);
-            color: #000;
-            box-shadow: 0 0 20px var(--primary-neon), inset 0 0 20px rgba(255,255,255,0.5);
-        }
-
-        /* Views */
-        .view-section {
-            display: none;
-            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            padding: 60px 20px;
-            max-width: 1100px;
-            margin: 0 auto;
-            flex: 1;
-        }
-
-        .view-section.active { display: block; }
-
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* Hero Section */
-        .hero { text-align: center; padding: 40px 0 60px 0; }
-        .hero h1 { font-size: 56px; color: var(--text-white); margin-bottom: 20px; text-shadow: 0 0 20px rgba(255,255,255,0.2); }
-        .hero p { font-size: 20px; max-width: 650px; margin: 0 auto 40px auto; line-height: 1.6; }
-
-        /* Grids & Cards */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 35px; }
-        .card { padding: 35px 25px; text-align: center; transition: all 0.4s ease; }
-        .card:hover { border-color: var(--primary-neon); box-shadow: 0 15px 35px rgba(0, 243, 255, 0.2); transform: translateY(-10px); }
-        .card h2 { color: var(--primary-neon); margin-top: 0; }
-        .card-icon { font-size: 50px; margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); }
-
-        /* Inputs */
-        textarea, input {
-            width: 100%;
-            padding: 16px;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: white;
-            border-radius: 8px;
-            font-size: 16px;
-            font-family: inherit;
             box-sizing: border-box;
-            outline: none;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-white);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo span { color: var(--primary-cyan); }
+        .logo-shield { color: var(--primary-cyan); font-size: 24px; }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin: 0;
+        }
+
+        .nav-links li {
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-light);
+            transition: color 0.3s;
+        }
+        .nav-links li:hover { color: var(--primary-cyan); }
+
+        .btn-nav-login {
+            background: transparent;
+            color: var(--primary-cyan);
+            border: 1px solid var(--primary-cyan);
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
             transition: all 0.3s;
         }
+        .btn-nav-login:hover {
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+            background: rgba(0, 243, 255, 0.1);
+        }
 
-        textarea:focus, input:focus { border-color: var(--primary-neon); box-shadow: 0 0 15px rgba(0, 243, 255, 0.3); background: rgba(0, 0, 0, 0.6); }
+        /* Main Container for scrolling */
+        .main-content { margin-top: 80px; }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 100px 10%;
+            min-height: 60vh;
+        }
+
+        .hero-text { flex: 1; padding-right: 50px; }
+        .hero-text h1 {
+            font-size: 54px;
+            color: var(--text-white);
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+        .hero-text h1 span { color: var(--primary-cyan); text-shadow: 0 0 20px rgba(0, 243, 255, 0.4); }
+        .hero-text p { font-size: 18px; margin-bottom: 40px; max-width: 500px; }
+
+        .hero-buttons { display: flex; gap: 20px; }
         
-        .result-box { padding: 20px; border-radius: 8px; background: rgba(0, 0, 0, 0.6); margin-top: 20px; font-weight: bold; font-size: 16px; }
+        .btn-primary {
+            background: transparent;
+            color: var(--primary-cyan);
+            border: 1px solid var(--primary-cyan);
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+        }
+        .btn-primary:hover { box-shadow: 0 0 20px rgba(0, 243, 255, 0.4); }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-white);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-secondary:hover { border-color: var(--text-white); }
+
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            filter: drop-shadow(0 0 30px rgba(0, 243, 255, 0.5));
+        }
+
+        /* Section Titles */
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            color: var(--text-white);
+            margin: 60px 0 20px 0;
+        }
+        .section-title span { color: var(--primary-cyan); }
+        .section-title .red-text { color: var(--primary-red); }
+        .section-subtitle { text-align: center; margin-bottom: 50px; font-size: 16px; }
+
+        /* Tools Grid */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 0 10%;
+            margin-bottom: 80px;
+        }
+
+        .tool-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 243, 255, 0.1);
+            border-radius: 12px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 243, 255, 0.1);
+            border-color: rgba(0, 243, 255, 0.3);
+        }
+        .tool-icon { font-size: 40px; color: var(--primary-cyan); margin-bottom: 20px; text-shadow: 0 0 15px rgba(0, 243, 255, 0.5); }
+        .tool-card h3 { color: var(--text-white); margin-top: 0; font-size: 22px; }
+
+        /* Stats Grid */
+        .stats-card {
+            background: #10151c;
+            padding: 40px 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stats-card h2 {
+            font-size: 48px;
+            margin: 0 0 10px 0;
+        }
+        .text-red { color: var(--primary-red); }
+        .text-cyan { color: var(--primary-cyan); }
+
+        /* CTA Section */
+        .cta-section { padding: 80px 10%; display: flex; justify-content: center; }
+        .cta-box {
+            background: transparent;
+            border: 1px solid var(--primary-cyan);
+            border-radius: 16px;
+            padding: 60px;
+            text-align: center;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 0 40px rgba(0, 243, 255, 0.05);
+        }
+        .cta-box h2 { color: var(--text-white); font-size: 32px; margin-top: 0; }
+        .cta-box p { margin-bottom: 40px; }
 
         /* Footer */
         footer {
+            background: #0d131d;
+            padding: 40px;
             text-align: center;
-            padding: 25px;
-            background: rgba(3, 5, 8, 0.8);
-            border-top: 1px solid var(--glass-border);
-            margin-top: auto;
-            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border-color);
+            font-size: 14px;
+        }
+        .footer-sig { color: var(--primary-cyan); font-weight: bold; }
+        .footer-contact { margin-top: 15px; display: flex; justify-content: center; gap: 20px; color: var(--primary-cyan); }
+
+        /* =========================================
+           AUTH OVERLAY (Hidden by default)
+           ========================================= */
+        #auth-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
 
-        .sandeep-sig {
-            color: var(--secondary-neon); font-weight: 900; letter-spacing: 3px;
-            text-shadow: 0 0 15px var(--secondary-neon);
-            animation: pulseText 2s infinite alternate;
+        .auth-box {
+            background: var(--bg-card);
+            border: 1px solid var(--primary-cyan);
+            border-radius: 12px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
+            position: relative;
         }
 
-        @keyframes pulseText { 0% { text-shadow: 0 0 10px var(--secondary-neon); } 100% { text-shadow: 0 0 25px var(--secondary-neon), 0 0 40px var(--secondary-neon); } }
+        .close-auth {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 24px;
+            color: var(--text-light);
+            cursor: pointer;
+        }
+        .close-auth:hover { color: var(--primary-red); }
 
+        .auth-toggle { display: flex; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .auth-toggle button {
+            flex: 1; background: none; border: none; padding: 10px; color: var(--text-light);
+            cursor: pointer; font-size: 16px; border-bottom: 2px solid transparent;
+        }
+        .auth-toggle button.active { color: var(--primary-cyan); border-bottom-color: var(--primary-cyan); }
+
+        .auth-box input {
+            width: 100%; padding: 12px; margin-bottom: 15px;
+            background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
+            color: white; border-radius: 6px; box-sizing: border-box; outline: none;
+        }
+        .auth-box input:focus { border-color: var(--primary-cyan); }
+
+        .btn-submit {
+            width: 100%; background: rgba(0, 243, 255, 0.1); color: var(--primary-cyan);
+            border: 1px solid var(--primary-cyan); padding: 12px; border-radius: 6px;
+            font-size: 16px; cursor: pointer; font-weight: bold; transition: 0.3s;
+        }
+        .btn-submit:hover { background: var(--primary-cyan); color: #000; box-shadow: 0 0 15px var(--primary-cyan); }
     </style>
 </head>
 <body>
 
-    <!-- Ambient Glowing Background -->
-    <div class="ambient-orb orb-1"></div>
-    <div class="ambient-orb orb-2"></div>
-
-    <!-- ==============================================
-         AUTHENTICATION PORTAL (LOGIN / REGISTER)
-         ============================================== -->
-    <div id="auth-container">
-        <div class="glass-panel auth-box">
-            <div class="auth-logo">NEXUS<span>AI</span></div>
-            <p style="color: var(--text-muted); margin: 0; font-size: 14px;">Secure Gateway Terminal</p>
-
-            <div class="auth-toggle">
-                <button id="tab-login" class="active" onclick="switchAuthMode('login')">Agent Login</button>
-                <button id="tab-register" onclick="switchAuthMode('register')">New Registration</button>
-            </div>
-
-            <div class="auth-input-group">
-                <input type="text" id="auth-user" placeholder="Username or Agent ID">
-                <input type="email" id="auth-email" placeholder="Encrypted Email Address" style="display: none;">
-                <input type="password" id="auth-pass" placeholder="Access Password">
-            </div>
-
-            <button class="btn-neon" id="auth-btn" onclick="processAuth()">Initiate Handshake</button>
-            <div id="auth-status" class="auth-status"></div>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <span class="logo-shield">🛡️</span> CyberGuard <span>AI</span>
         </div>
-    </div>
+        <ul class="nav-links">
+            <li>Home</li>
+            <li>Learning Hub</li>
+            <li>Password Checker</li>
+            <li>Scam Detector</li>
+            <li onclick="openAuth('register')">Register</li>
+            <li><button class="btn-nav-login" onclick="openAuth('login')">Login</button></li>
+        </ul>
+    </nav>
 
-
-    <!-- ==============================================
-         MAIN APPLICATION DASHBOARD (Hidden on load)
-         ============================================== -->
-    <div id="app-container">
-        <nav>
-            <div class="logo">NEXUS<span>AI</span></div>
-            <ul class="nav-links">
-                <li class="active" onclick="switchView('home', this)">Command Center</li>
-                <li onclick="switchView('password-tool', this)">Password Engine</li>
-                <li onclick="switchView('scam-tool', this)">Threat Scanner</li>
-                <li onclick="switchView('learning', this)">Training Hub</li>
-            </ul>
-            <!-- Replaced Register button with a Logout button -->
-            <button class="btn-neon" style="width: auto; padding: 10px 20px; border-color: var(--danger); color: var(--danger);" onclick="logout()">Disconnect</button>
-        </nav>
-
-        <!-- HOME VIEW -->
-        <div id="home" class="view-section active">
-            <div class="hero">
-                <h1 id="welcome-text">Defend the Digital Grid</h1>
-                <p>An intelligent, AI-driven cybersecurity awareness platform built to educate, test, and protect against modern social engineering and digital threats.</p>
+    <!-- Main Landing Page -->
+    <div class="main-content">
+        
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="hero-text">
+                <h1>Secure Your <span>Digital<br>Life</span></h1>
+                <p>An intelligent, AI-driven cybersecurity awareness platform built to educate, test, and protect against modern digital threats.</p>
+                <div class="hero-buttons">
+                    <button class="btn-primary" onclick="openAuth('login')">Login to Start ➔</button>
+                    <button class="btn-secondary">Explore Hub</button>
+                </div>
             </div>
-
-            <div class="grid">
-                <div class="card glass-panel">
-                    <div class="card-icon">🧠</div>
-                    <h2>85% Human Error</h2>
-                    <p style="color: var(--text-light);">The vast majority of breaches involve a human element. Our tools train you to spot the red flags before it's too late.</p>
-                </div>
-                <div class="card glass-panel">
-                    <div class="card-icon">🛡️</div>
-                    <h2>Local Processing</h2>
-                    <p style="color: var(--text-light);">Your privacy matters. Our security heuristics run completely in your browser. No data leaves your machine.</p>
-                </div>
-                <div class="card glass-panel">
-                    <div class="card-icon">📈</div>
-                    <h2>Adaptive Training</h2>
-                    <p style="color: var(--text-light);">Test your knowledge with our dynamic cyber survival assessment and receive a customized risk report.</p>
-                </div>
+            <div class="hero-image">
+                <!-- Glowing Network SVG Mockup -->
+                <svg width="300" height="300" viewBox="0 0 24 24" fill="none" stroke="var(--primary-cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="8" y="2" width="8" height="6" rx="1"></rect>
+                    <path d="M12 8v4"></path>
+                    <path d="M4 12h16"></path>
+                    <path d="M4 12v4"></path>
+                    <path d="M20 12v4"></path>
+                    <rect x="2" y="16" width="6" height="6" rx="1"></rect>
+                    <rect x="16" y="16" width="6" height="6" rx="1"></rect>
+                </svg>
             </div>
         </div>
 
-        <!-- PASSWORD AI VIEW -->
-        <div id="password-tool" class="view-section">
-            <div class="glass-panel" style="max-width: 700px; margin: 0 auto; padding: 40px;">
-                <h1 style="color: var(--primary-neon); margin-top: 0;">Password Integrity Matrix</h1>
-                <p>Analyze your password entropy against common dictionary attacks and brute-force algorithms.</p>
-                <input type="password" id="pwdInput" placeholder="Enter security key to analyze..." onkeyup="analyzePassword()">
-                <div id="pwdResult" class="result-box" style="border-left: 5px solid gray;">Awaiting input stream...</div>
+        <!-- Tools Section -->
+        <h2 class="section-title">Intelligent <span>Security Tools</span></h2>
+        <p class="section-subtitle">Everything you need to audit your digital footprint.</p>
+        
+        <div class="grid-container">
+            <div class="tool-card">
+                <div class="tool-icon">🔒</div>
+                <h3>Password AI</h3>
+                <p>Analyze your password strength locally using advanced heuristics without ever sending it to a server.</p>
+            </div>
+            <div class="tool-card">
+                <div class="tool-icon">💲</div>
+                <h3>Scam Detector</h3>
+                <p>Paste suspicious emails or SMS messages to detect phishing, urgency tactics, and fraud attempts instantly.</p>
+            </div>
+            <div class="tool-card">
+                <div class="tool-icon">🧠</div>
+                <h3>Awareness Quiz</h3>
+                <p>Test your knowledge with our adaptive 15-question cyber survival assessment and get a customized report.</p>
             </div>
         </div>
 
-        <!-- SCAM DETECTOR VIEW -->
-        <div id="scam-tool" class="view-section">
-            <div class="glass-panel" style="max-width: 700px; margin: 0 auto; padding: 40px;">
-                <h1 style="color: var(--primary-neon); margin-top: 0;">Phishing & Scam Detector</h1>
-                <p>Paste suspicious emails, text messages, or DMs below. Our heuristic engine will flag urgency tactics and fraud attempts.</p>
-                <textarea id="scamInput" rows="6" placeholder="Paste the suspicious payload here..."></textarea>
-                <button class="btn-neon" style="margin-top: 10px;" onclick="analyzeScam()">Scan Payload</button>
-                <div id="scamResult" class="result-box" style="display: none;"></div>
+        <!-- Stats Section -->
+        <h2 class="section-title">Why <span class="red-text">Cyber Awareness</span> Matters</h2>
+        <div class="grid-container" style="grid-template-columns: repeat(4, 1fr);">
+            <div class="stats-card">
+                <h2>85<span class="text-red">%</span></h2>
+                <p>Of breaches involve a human element (Social Engineering).</p>
+            </div>
+            <div class="stats-card">
+                <h2>3<span class="text-cyan">B+</span></h2>
+                <p>Fake phishing emails are sent worldwide every single day.</p>
+            </div>
+            <div class="stats-card">
+                <h2>8<span class="text-red">x</span></h2>
+                <p>Increase in mobile malware and SMS phishing attacks.</p>
+            </div>
+            <div class="stats-card">
+                <h2>9<span class="text-cyan">M+</span></h2>
+                <p>Comprehensive learning modules available in our Hub.</p>
             </div>
         </div>
 
-        <!-- LEARNING HUB VIEW -->
-        <div id="learning" class="view-section">
-            <h1 style="text-align: center; color: var(--text-white); font-size: 40px; margin-bottom: 50px;">Tactical Training Hub</h1>
-            <div class="grid">
-                <div class="card glass-panel">
-                    <h2>Module 1: Social Engineering</h2>
-                    <p>Learn how attackers manipulate human psychology to steal credentials.</p>
-                    <button class="btn-neon" style="margin-top: 25px;" onclick="alert('Accessing Module 1 Secure Data...')">Access Module</button>
-                </div>
-                <div class="card glass-panel">
-                    <h2>Module 2: 2FA Architecture</h2>
-                    <p>Understand the difference between SMS, Authenticator apps, and hardware keys.</p>
-                    <button class="btn-neon" style="margin-top: 25px;" onclick="alert('Accessing Module 2 Secure Data...')">Access Module</button>
-                </div>
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <div class="cta-box">
+                <h2>Ready to upgrade your defenses?</h2>
+                <p>Join the platform today and get your personalized cybersecurity risk report in less than 5 minutes.</p>
+                <button class="btn-primary" style="margin: 0 auto;" onclick="openAuth('register')">Create Free Account</button>
             </div>
         </div>
 
         <!-- Footer -->
         <footer>
-            <p style="margin: 0; font-size: 16px;">Designed & Engineered by <span class="sandeep-sig">SANDEEP</span></p>
+            © 2026 CyberGuard AI<br>
+            Created by <span class="footer-sig">VK</span>
+            <div class="footer-contact">
+                <span>✉ darbarvk67@gmail.com</span> | <span>📞 +1 (555) 012-3456</span>
+            </div>
         </footer>
     </div>
 
-    <!-- JavaScript Engine -->
+    <!-- ==============================================
+         AUTHENTICATION MODAL
+         ============================================== -->
+    <div id="auth-overlay">
+        <div class="auth-box">
+            <span class="close-auth" onclick="closeAuth()">×</span>
+            <div class="logo" style="justify-content: center; margin-bottom: 20px;">
+                <span class="logo-shield">🛡️</span> CyberGuard <span>AI</span>
+            </div>
+            
+            <div class="auth-toggle">
+                <button id="tab-login" class="active" onclick="switchAuthTab('login')">Login</button>
+                <button id="tab-register" onclick="switchAuthTab('register')">Register</button>
+            </div>
+
+            <input type="text" id="auth-email" placeholder="Email Address">
+            <input type="password" placeholder="Password">
+            <button class="btn-submit" id="auth-btn" onclick="alert('Authentication protocol initiated.')">Secure Login</button>
+        </div>
+    </div>
+
     <script>
-        // --- AUTHENTICATION LOGIC ---
-        let currentAuthMode = 'login';
+        const authOverlay = document.getElementById('auth-overlay');
+        const tabLogin = document.getElementById('tab-login');
+        const tabRegister = document.getElementById('tab-register');
+        const authBtn = document.getElementById('auth-btn');
 
-        function switchAuthMode(mode) {
-            currentAuthMode = mode;
-            document.getElementById('tab-login').classList.remove('active');
-            document.getElementById('tab-register').classList.remove('active');
-            
-            if(mode === 'login') {
-                document.getElementById('tab-login').classList.add('active');
-                document.getElementById('auth-email').style.display = 'none';
-                document.getElementById('auth-btn').innerText = 'Initiate Handshake';
+        function openAuth(mode) {
+            authOverlay.style.display = 'flex';
+            setTimeout(() => { authOverlay.style.opacity = '1'; }, 10);
+            switchAuthTab(mode);
+        }
+
+        function closeAuth() {
+            authOverlay.style.opacity = '0';
+            setTimeout(() => { authOverlay.style.display = 'none'; }, 300);
+        }
+
+        function switchAuthTab(mode) {
+            if (mode === 'login') {
+                tabLogin.classList.add('active');
+                tabRegister.classList.remove('active');
+                authBtn.innerText = "Secure Login";
             } else {
-                document.getElementById('tab-register').classList.add('active');
-                document.getElementById('auth-email').style.display = 'block';
-                document.getElementById('auth-btn').innerText = 'Register Node';
-            }
-        }
-
-        function processAuth() {
-            const user = document.getElementById('auth-user').value || 'Operative';
-            const status = document.getElementById('auth-status');
-            const btn = document.getElementById('auth-btn');
-
-            if(document.getElementById('auth-user').value === "" || document.getElementById('auth-pass').value === "") {
-                status.style.color = "var(--danger)";
-                status.innerText = "Error: Credentials cannot be empty.";
-                return;
-            }
-
-            status.style.color = "var(--primary-neon)";
-            btn.disabled = true;
-            btn.style.opacity = "0.5";
-
-            // Simulated hacking/loading sequence
-            status.innerText = "> Decrypting credentials...";
-            setTimeout(() => { status.innerText = "> Verifying database hash..."; }, 800);
-            setTimeout(() => { status.innerText = "> Bypassing firewall protocols..."; }, 1600);
-            setTimeout(() => { 
-                status.style.color = "var(--success)";
-                status.innerText = "> ACCESS GRANTED."; 
-            }, 2400);
-
-            // Transition to main dashboard
-            setTimeout(() => {
-                document.getElementById('auth-container').style.display = 'none';
-                document.getElementById('app-container').style.display = 'flex';
-                // Trigger fade in
-                setTimeout(() => {
-                    document.getElementById('app-container').style.opacity = '1';
-                }, 50);
-                
-                // Personalize the dashboard
-                document.getElementById('welcome-text').innerText = `Welcome to the Grid, ${user}`;
-            }, 3000);
-        }
-
-        function logout() {
-            // Reset and show login screen
-            document.getElementById('app-container').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('app-container').style.display = 'none';
-                document.getElementById('auth-container').style.display = 'flex';
-                document.getElementById('auth-status').innerText = "";
-                document.getElementById('auth-user').value = "";
-                document.getElementById('auth-pass').value = "";
-                document.getElementById('auth-btn').disabled = false;
-                document.getElementById('auth-btn').style.opacity = "1";
-            }, 500);
-        }
-
-        // --- DASHBOARD NAVIGATION LOGIC ---
-        function switchView(viewId, element) {
-            document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
-            document.getElementById(viewId).classList.add('active');
-            element.classList.add('active');
-        }
-
-        // --- PASSWORD AI LOGIC ---
-        function analyzePassword() {
-            const pwd = document.getElementById('pwdInput').value;
-            const res = document.getElementById('pwdResult');
-            
-            if (!pwd) {
-                res.innerHTML = "Awaiting input stream...";
-                res.style.borderLeft = "5px solid gray";
-                res.style.color = "white";
-                return;
-            }
-
-            let score = 0;
-            if (pwd.length >= 12) score += 2; else if (pwd.length >= 8) score += 1;
-            if (/[A-Z]/.test(pwd)) score++;
-            if (/[0-9]/.test(pwd)) score++;
-            if (/[^A-Za-z0-9]/.test(pwd)) score++;
-
-            if (score <= 2) {
-                res.innerHTML = "⚠️ CRITICAL VULNERABILITY: Hash can be cracked instantly.";
-                res.style.borderLeft = "5px solid var(--danger)"; res.style.color = "var(--danger)";
-            } else if (score <= 4) {
-                res.innerHTML = "⚡ MODERATE INTEGRITY: Vulnerable to targeted dictionary attacks.";
-                res.style.borderLeft = "5px solid #ffcc00"; res.style.color = "#ffcc00";
-            } else {
-                res.innerHTML = "🛡️ OPTIMAL SECURITY: High entropy detected.";
-                res.style.borderLeft = "5px solid var(--success)"; res.style.color = "var(--success)";
-            }
-        }
-
-        // --- SCAM DETECTOR LOGIC ---
-        function analyzeScam() {
-            const text = document.getElementById('scamInput').value.toLowerCase();
-            const res = document.getElementById('scamResult');
-            res.style.display = "block";
-
-            if (!text) {
-                res.innerHTML = "System Error: No payload provided.";
-                res.style.borderLeft = "5px solid gray"; res.style.color = "white";
-                return;
-            }
-
-            const redFlags = ['urgent', 'verify', 'account suspended', 'click here', 'password reset', 'bank', 'winner', 'gift card', 'wallet', 'locked', 'unauthorized login', 'claim'];
-            let flagCount = 0;
-            redFlags.forEach(flag => { if (text.includes(flag)) flagCount++; });
-
-            if (flagCount === 0) {
-                res.innerHTML = "✅ STATUS NORMAL: No heuristic phishing keywords detected.";
-                res.style.borderLeft = "5px solid var(--success)"; res.style.color = "var(--success)";
-            } else if (flagCount <= 2) {
-                res.innerHTML = `⚠️ WARNING: Detected ${flagCount} suspicious keyword(s). Proceed with caution.`;
-                res.style.borderLeft = "5px solid #ffcc00"; res.style.color = "#ffcc00";
-            } else {
-                res.innerHTML = `🚨 SEVERE ALERT: Detected ${flagCount} phishing triggers! DO NOT CLICK LINKS.`;
-                res.style.borderLeft = "5px solid var(--danger)"; res.style.color = "var(--danger)";
+                tabRegister.classList.add('active');
+                tabLogin.classList.remove('active');
+                authBtn.innerText = "Create Account";
             }
         }
     </script>
